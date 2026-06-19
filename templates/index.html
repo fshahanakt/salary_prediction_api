@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Prediction</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Salary Prediction System</h1>
+
+    <div class="card">
+        <label>Years of Experience</label>
+        <input type="number" id="experience" step="0.1" placeholder="Enter years of experience">
+
+        <button onclick="predictSalary()">Predict Salary</button>
+
+        <div id="result"></div>
+    </div>
+</div>
+
+<script>
+async function predictSalary() {
+    const experience = document.getElementById("experience").value;
+
+    const response = await fetch("/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            years_experience: parseFloat(experience)
+        })
+    });
+
+    const data = await response.json();
+
+    document.getElementById("result").innerHTML =
+        `Predicted Salary: ₹${data.predicted_salary.toFixed(2)}`;
+}
+</script>
+
+</body>
+</html>
